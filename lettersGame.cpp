@@ -222,7 +222,6 @@ int main(){
     cout << "This program ran in: " << elapsed.count() << " seconds" << endl;
     cout << "Total cumber of calculations: " << total_calcs << endl;
 
-    cout << "this is a test" << endl;
     /**
     for(auto i : shorterperms){
         cout << i << endl;
