@@ -1,0 +1,37 @@
+9 letter permutations:
+n!/(n-k)!
+
+n = 9  
+k = 9...3
+
+9!/(9-9)! = 362,880
+9!/(9-8)! = 362,880
+9!/(9-7)! = 181,440
+9!/(9-6)! = 60,480
+9!/(9-5)! = 15,120
+9!/(9-4)! = 3024
+9!/(9-3)! = 504
+
+=986,168 maximum combinations 
+ 
+Dictionary:
+
+Original length of dictionary size: 45,440
+
+After removing words greater than 9 letters: 33,733
+Removal of 11,707 words.
+
+Only searching for words that begin with one of the chosen letters (Presuming words are distributed evenly with starting letters):
+33,733/9 = 3,748
+
+Although due to the nature of the users being allowed to choose vowels (which appear more often), I estimate (very roughly):
+33,733/4 = 8,433
+
+Seperating words into different files by length, further reduces the size. (These are all very rough estimates):
+9 = 6,093
+8 = 7,081
+7 = 7,376
+6 = 6,178
+5 = 4,176
+4 = 2,239
+3 = 538
