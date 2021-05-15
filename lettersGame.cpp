@@ -137,34 +137,53 @@ void read_file(vector<string>& dictionary, string str, int word_size){
 }
 
 bool compare(vector<string> permutations, vector<string> shorterperms, vector<string> dictionary, int word_size){
-    int next_letter_index =dictionary.size();
-    int begin_index;
-
+    int upper_limit =dictionary.size();
+    int lower_limit =0;
+    char last_perm = 'a';
+    unsigned int loop_count =0;
     if(word_size == 9){
-        for(auto perm : permutations){
-            for(auto word : dictionary){
-                if(word.at(0) > perm.at(0)){
+        for(int i=0; i<permutations.size(); i++){
+            if(permutations[i].at(0) != last_perm && i >1){
+                lower_limit = upper_limit;
+                upper_limit = dictionary.size();
+            }
+            for(int n=lower_limit; n<upper_limit; n++){
+                loop_count ++;
+                if(dictionary[n].at(0) > permutations[i].at(0)){
+                    upper_limit = n;
                     break;
                 }
-                if (perm == word){
-                    cout << perm << endl;
+                if (permutations[i] == dictionary[n]){
+                    cout << permutations[i] << endl;
+                    cout << "Loops count: " << loop_count << endl;
                     return true;
                 }
             }
+            last_perm = permutations[i].at(0);
         }
+        cout << "Loops count: " << loop_count << endl;
         return false;
     }else{
-        for(auto perm : shorterperms){
-            for(auto word : dictionary){
-                if(word.at(0) > perm.at(0)){
+        for(int i=0; i<shorterperms.size(); i++){
+            if(shorterperms[i].at(0) != last_perm && i >1){
+                lower_limit = upper_limit;
+                upper_limit = dictionary.size();
+            }
+            for(int n=lower_limit; n<upper_limit; n++){
+                loop_count ++;
+                if(dictionary[n].at(0) > shorterperms[i].at(0)){
+                    upper_limit = n;
                     break;
                 }
-                if (perm == word){
-                    cout << perm << endl;
+                if (shorterperms[i] == dictionary[n]){
+                    cout << shorterperms[i] << endl;
+                    cout << "Loops count: " << loop_count << endl;
                     return true;
                 }
             }
+            last_perm = shorterperms[i].at(0);
         }
+        cout << "Loops count: " << loop_count << endl;
         return false;
     }
     return false;
@@ -173,7 +192,7 @@ bool compare(vector<string> permutations, vector<string> shorterperms, vector<st
 int main(){
     //Start measuring time
     auto begin = chrono::high_resolution_clock::now();
-    string str = "ceetlsoeo";    
+    string str = "ijbtdhaug";    
 
     int n = str.size();
     int word_size = 9;
@@ -185,19 +204,19 @@ int main(){
     vector<string> dictionary;
 
     permute(str, 0, n-1, permutations); 
-    cout << "Size of permutations vector: " << permutations.size() << endl;
+    std::cout << "Size of permutations vector: " << permutations.size() << endl;
 
     read_file(dictionary, str, word_size);
-    cout << "Size of dictionary vector: " << dictionary.size() << endl;
+    std::cout << "Size of dictionary vector: " << dictionary.size() << endl;
 
     sort(permutations.begin(), permutations.end()); 
-    cout << "Stage " << word_size << " started" << endl;
+    std::cout << "Stage " << word_size << " started" << endl;
 
     total_calcs += permutations.size() * dictionary.size();
     if(compare(permutations, shorterperms, dictionary, word_size)){
     }else while(word_found == false){
         word_size--;
-        cout << "Stage " << word_size << " started" << endl;
+        std::cout << "Stage " << word_size << " started" << endl;
 
         dictionary.clear();
         shorterperms.clear();
@@ -205,9 +224,9 @@ int main(){
         shorten(permutations, shorterperms, word_size);
         remove_duplicates(shorterperms);
         
-        cout << "Size of permutations vector: " << shorterperms.size() << endl;
+        std::cout << "Size of permutations vector: " << shorterperms.size() << endl;
         read_file(dictionary, str, word_size);
-        cout << "Size of dictionary vector: " << dictionary.size() << endl;
+        std::cout << "Size of dictionary vector: " << dictionary.size() << endl;
         total_calcs += shorterperms.size() * dictionary.size();
         sort(shorterperms.begin(), shorterperms.end());
         if(compare(permutations, shorterperms, dictionary, word_size)){
@@ -219,8 +238,8 @@ int main(){
     auto end = chrono::high_resolution_clock::now();
     auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - begin);
 
-    cout << "This program ran in: " << elapsed.count() << " seconds" << endl;
-    cout << "Total number of calculations: " << total_calcs << endl;
+    std::cout << "This program ran in: " << elapsed.count() << " seconds" << endl;
+    std::cout << "Total number of calculations: " << total_calcs << endl;
 
     return 0;
 }
