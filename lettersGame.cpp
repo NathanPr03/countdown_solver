@@ -137,16 +137,15 @@ void read_file(vector<string>& dictionary, string str, int word_size){
 }
 
 bool compare(vector<string> permutations, vector<string> shorterperms, vector<string> dictionary, int word_size){
-    char search_letter='a';
-    char previous_search_letter='a';
-    //ofstream output("outputfile99.txt");
-    //ofstream output2("outputfile2.txt");
-
     int next_letter_index =dictionary.size();
     int begin_index;
+
     if(word_size == 9){
         for(auto perm : permutations){
             for(auto word : dictionary){
+                if(word.at(0) > perm.at(0)){
+                    break;
+                }
                 if (perm == word){
                     cout << perm << endl;
                     return true;
@@ -157,6 +156,9 @@ bool compare(vector<string> permutations, vector<string> shorterperms, vector<st
     }else{
         for(auto perm : shorterperms){
             for(auto word : dictionary){
+                if(word.at(0) > perm.at(0)){
+                    break;
+                }
                 if (perm == word){
                     cout << perm << endl;
                     return true;
@@ -166,9 +168,8 @@ bool compare(vector<string> permutations, vector<string> shorterperms, vector<st
         return false;
     }
     return false;
-    //output.close();
-    //output2.close();
 }
+
 int main(){
     //Start measuring time
     auto begin = chrono::high_resolution_clock::now();
@@ -179,7 +180,6 @@ int main(){
     unsigned long int total_calcs =0;
     bool word_found =0;
 
-    //ofstream output3("outputfile3.txt");
     vector<string> permutations;
     vector<string> shorterperms;
     vector<string> dictionary;
@@ -220,21 +220,7 @@ int main(){
     auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - begin);
 
     cout << "This program ran in: " << elapsed.count() << " seconds" << endl;
-    cout << "Total cumber of calculations: " << total_calcs << endl;
+    cout << "Total number of calculations: " << total_calcs << endl;
 
-    /**
-    for(auto i : shorterperms){
-        cout << i << endl;
-    }
-    
-    set<string> unique_set (eightlongperms.begin(), eightlongperms.end());
-    eightlongperms.assign(unique_set.begin(), unique_set.end());
-    sort(eightlongperms.begin(), eightlongperms.end());
-
-    cout << "The unique set " << unique_set.size() << endl;
-    cout << eightlongperms.size() << endl;
-
-    remove(eightlongperms);
-    */
     return 0;
 }
