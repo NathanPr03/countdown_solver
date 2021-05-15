@@ -155,13 +155,11 @@ bool compare(vector<string> permutations, vector<string> shorterperms, vector<st
                 }
                 if (permutations[i] == dictionary[n]){
                     cout << permutations[i] << endl;
-                    cout << "Loops count: " << loop_count << endl;
                     return true;
                 }
             }
             last_perm = permutations[i].at(0);
         }
-        cout << "Loops count: " << loop_count << endl;
         return false;
     }else{
         for(int i=0; i<shorterperms.size(); i++){
@@ -177,22 +175,23 @@ bool compare(vector<string> permutations, vector<string> shorterperms, vector<st
                 }
                 if (shorterperms[i] == dictionary[n]){
                     cout << shorterperms[i] << endl;
-                    cout << "Loops count: " << loop_count << endl;
                     return true;
                 }
             }
             last_perm = shorterperms[i].at(0);
         }
-        cout << "Loops count: " << loop_count << endl;
         return false;
     }
     return false;
 }
 
 int main(){
+    string str;
+    cout << "Please enter the letters: ";
+    cin >> str;
+
     //Start measuring time
     auto begin = chrono::high_resolution_clock::now();
-    string str = "ijbtdhaug";    
 
     int n = str.size();
     int word_size = 9;
@@ -204,19 +203,17 @@ int main(){
     vector<string> dictionary;
 
     permute(str, 0, n-1, permutations); 
-    std::cout << "Size of permutations vector: " << permutations.size() << endl;
 
     read_file(dictionary, str, word_size);
-    std::cout << "Size of dictionary vector: " << dictionary.size() << endl;
 
     sort(permutations.begin(), permutations.end()); 
-    std::cout << "Stage " << word_size << " started" << endl;
+    std::cout << "Stage " << word_size << " started!" << endl;
 
     total_calcs += permutations.size() * dictionary.size();
     if(compare(permutations, shorterperms, dictionary, word_size)){
     }else while(word_found == false){
         word_size--;
-        std::cout << "Stage " << word_size << " started" << endl;
+        std::cout << "Stage " << word_size << " started!" << endl;
 
         dictionary.clear();
         shorterperms.clear();
@@ -224,9 +221,9 @@ int main(){
         shorten(permutations, shorterperms, word_size);
         remove_duplicates(shorterperms);
         
-        std::cout << "Size of permutations vector: " << shorterperms.size() << endl;
+        
         read_file(dictionary, str, word_size);
-        std::cout << "Size of dictionary vector: " << dictionary.size() << endl;
+        
         total_calcs += shorterperms.size() * dictionary.size();
         sort(shorterperms.begin(), shorterperms.end());
         if(compare(permutations, shorterperms, dictionary, word_size)){
