@@ -136,56 +136,41 @@ void read_file(vector<string>& dictionary, string str, int word_size){
     }
 }
 
-bool compare(vector<string> permutations, vector<string> shorterperms, vector<string> dictionary, int word_size){
+bool compare(vector<string> shorterperms, vector<string> dictionary, int word_size){
     int upper_limit =dictionary.size();
     int lower_limit =0;
     char last_perm = 'a';
     unsigned int loop_count =0;
-    if(word_size == 9){
-        for(int i=0; i<permutations.size(); i++){
-            if(permutations[i].at(0) != last_perm && i >1){
-                lower_limit = upper_limit;
-                upper_limit = dictionary.size();
-            }
-            for(int n=lower_limit; n<upper_limit; n++){
-                loop_count ++;
-                if(dictionary[n].at(0) > permutations[i].at(0)){
-                    upper_limit = n;
-                    break;
-                }
-                if (permutations[i] == dictionary[n]){
-                    cout << permutations[i] << endl;
-                    return true;
-                }
-            }
-            last_perm = permutations[i].at(0);
+    int letter_search =0;
+    for(int i=0; i<shorterperms.size(); i++){
+        if(shorterperms[i].at(0) != last_perm && i >1){
+            lower_limit = upper_limit;
+            upper_limit = dictionary.size();
         }
-        return false;
-    }else{
-        for(int i=0; i<shorterperms.size(); i++){
-            if(shorterperms[i].at(0) != last_perm && i >1){
-                lower_limit = upper_limit;
-                upper_limit = dictionary.size();
+        for(int n=lower_limit; n<upper_limit; n++){
+            loop_count++;
+            if(dictionary[n].at(0) > shorterperms[i].at(0)){
+                letter_search = 0;
+                upper_limit = n;
+                break;
             }
-            for(int n=lower_limit; n<upper_limit; n++){
-                loop_count ++;
-                if(dictionary[n].at(0) > shorterperms[i].at(0)){
-                    upper_limit = n;
-                    break;
-                }
-                if (shorterperms[i] == dictionary[n]){
-                    cout << shorterperms[i] << endl;
-                    return true;
-                }
+            //if(dictionary[n].at(0) <= shorterperms[i].at(0) && dictionary[n].at(1) > shorterperms[i].at(1)){
+                //break;
+            //}
+            
+            if (shorterperms[i] == dictionary[n]){
+                cout << "The longest word we could find is: " << shorterperms[i] << endl;
+                //cout << loop_count << endl;
+                return true;
             }
-            last_perm = shorterperms[i].at(0);
         }
-        return false;
+        last_perm = shorterperms[i].at(0);
     }
     return false;
 }
 
 int main(){
+    ofstream output("outputfile2.txt");
     string str;
     cout << "Please enter the letters: ";
     cin >> str;
@@ -203,32 +188,26 @@ int main(){
     vector<string> dictionary;
 
     permute(str, 0, n-1, permutations); 
-
-    read_file(dictionary, str, word_size);
-
+    
     sort(permutations.begin(), permutations.end()); 
-    std::cout << "Stage " << word_size << " started!" << endl;
 
     total_calcs += permutations.size() * dictionary.size();
-    if(compare(permutations, shorterperms, dictionary, word_size)){
-    }else while(word_found == false){
-        word_size--;
-        std::cout << "Stage " << word_size << " started!" << endl;
-
-        dictionary.clear();
-        shorterperms.clear();
-
+    while(word_found == false){
+        cout << "Starting stage " << word_size << "!" << endl;
         shorten(permutations, shorterperms, word_size);
         remove_duplicates(shorterperms);
         
-        
         read_file(dictionary, str, word_size);
-        
-        total_calcs += shorterperms.size() * dictionary.size();
+
         sort(shorterperms.begin(), shorterperms.end());
-        if(compare(permutations, shorterperms, dictionary, word_size)){
+
+        if(compare(shorterperms, dictionary, word_size)){
             word_found = true;
         }
+        word_size--;
+
+        dictionary.clear();
+        shorterperms.clear();
     }
     
     //Stop measuring time and calculate the elapsed time
@@ -236,7 +215,5 @@ int main(){
     auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - begin);
 
     std::cout << "This program ran in: " << elapsed.count() << " seconds" << endl;
-    std::cout << "Total number of calculations: " << total_calcs << endl;
-
     return 0;
 }
