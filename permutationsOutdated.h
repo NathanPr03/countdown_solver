@@ -18,12 +18,6 @@ void shorten(vector<string> permuations, vector<string>& eightlongperms, int wor
 
 void remove_duplicates(vector<string>& shorterperms);
 
-void shorter(string str, int word_size, vector<string>& shortened_sorted_string);
-
-void dictionary_read(unordered_map<string, string>& hash_dictionary, string str, int word_size, vector<string> dictionary);
-
-bool comparison(vector<string>& strings_vec, unordered_map<string, string>& hash_dictionary);
-
 void read_file(vector<string>& dictionary, string str, int word_size);
 
 bool compare(vector<string> shorterperms, vector<string> dictionary, int word_size);

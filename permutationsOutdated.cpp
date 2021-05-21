@@ -8,7 +8,7 @@
 #include <set>
 #include <algorithm>
 #include <fstream>
-#include <unordered_map>
+#include <chrono>
 #include "permutations.h"
 using namespace std;
 
@@ -81,26 +81,6 @@ void letter_exists(vector<string>& dictionary, ifstream &input, string word, str
         }
     }
 }
-
-void shorter(string str, int word_size, vector<string>& strings_vec){
-    for(int i=0; i<=str.size(); i++){
-        string str2 = str;
-        str2.erase(str2.end()-i);
-        strings_vec.push_back(str2);
-    }
-}
-
-void hash_map(unordered_map<string, string>& hash_dictionary, ifstream &input, string word, string str){
-    if(input.is_open()){
-        while(getline(input, word)){
-            if(word.at(0)==str.at(0) || word.at(0)==str.at(1) || word.at(0)==str.at(2) || word.at(0)==str.at(3) || word.at(0)==str.at(4) || word.at(0)==str.at(5) || word.at(0)==str.at(6) || word.at(0)==str.at(7) || word.at(0)==str.at(8)){
-                string word_sorted = word;
-                sort(word_sorted.begin(), word_sorted.end());
-                hash_dictionary.insert({word, word_sorted});
-            }
-        }
-    }
-}
 /**
  * Reads in a specified dictionary file, and calls u another function to store words that start with a letter that is also in the countdown string
  * 
@@ -108,19 +88,19 @@ void hash_map(unordered_map<string, string>& hash_dictionary, ifstream &input, s
  * @param str The string of letters from the countdown game
  * @param word_size The current size of word we are looking for
  */ 
-void dictionary_read(unordered_map<string, string>& hash_dictionary, string str, int word_size, vector<string> dictionary){
+void read_file(vector<string>& dictionary, string str, int word_size){
     string word;
 
     //word_size wil dictate which dictionary file we read in, as they are split by length
     switch(word_size){
         case 9:{
             ifstream input("dictionary9.txt");
-            hash_map(hash_dictionary, input, word, str);
+            letter_exists(dictionary, input, word, str);
             break;
         }
         case 8:{
             ifstream input("dictionary8.txt");
-            hash_map(hash_dictionary, input, word, str);
+            letter_exists(dictionary, input, word, str);
             break;
         }
         case 7:{
@@ -148,20 +128,7 @@ void dictionary_read(unordered_map<string, string>& hash_dictionary, string str,
             letter_exists(dictionary, input, word, str);
             break;
         }
-    }   
-}
-
-bool comparison(vector<string>& strings_vec, unordered_map<string, string>& hash_dictionary){
-    for(auto perm : strings_vec){
-        sort(perm.begin(), perm.end());
-        for (auto word : hash_dictionary){
-            if(perm == word.second){
-                cout << "The longest word we could find is: " << word.first << "!"  << endl;
-                return true;
-            }      
-        } 
     }
-    return false;   
 }
 
 /**

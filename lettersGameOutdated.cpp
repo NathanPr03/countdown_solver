@@ -9,14 +9,14 @@
 #include <algorithm>
 #include <fstream>
 #include <chrono>
-#include <unordered_map>
+
 #include "permutations.h"
 
 using namespace std;
 
 int main(){
-    //ofstream output("outputfile.txt");
-    //ofstream output2("outputfile2.txt");
+    ofstream output("outputfile.txt");
+    ofstream output2("outputfile2.txt");
     string str;
     cout << "Please enter the letters: ";
     cin >> str;
@@ -32,31 +32,18 @@ int main(){
     vector<string> shorterperms;
     vector<string> dictionary;
 
-    vector<string> strings_vec;
-    unordered_map<string, string> hash_dictionary;
-
-    strings_vec.push_back(str);
-    while(word_found == false && word_size>0){
-        cout << "Looking for " << word_size << " letter words!" << endl;
-        dictionary_read(hash_dictionary, str, word_size, dictionary);
-
-        if(comparison(strings_vec, hash_dictionary)){
-            word_found = true;
-        }
-        hash_dictionary.clear();
-        strings_vec.clear();
-
-        word_size--;
-        shorter(str, word_size, strings_vec);
+    permute(str, 0, n-1, permutations); 
+    
+    for(auto word : permutations){
+        output << word << endl;
     }
-    
-    /**
-    //permute(str, 0, n-1, permutations); 
-    
-    //sort(permutations.begin(), permutations.end()); 
+    sort(permutations.begin(), permutations.end()); 
 
     read_file(dictionary, str, word_size);
-    
+    for(auto word : dictionary){
+        output2 << word << endl;
+    }
+
     while(word_found == false){
         cout << "Starting stage " << word_size << "!" << endl;
         shorten(permutations, shorterperms, word_size);
@@ -72,7 +59,7 @@ int main(){
         dictionary.clear();
         shorterperms.clear();
     }
-    */
+    
     //Stop measuring time and calculate the elapsed time
     auto end = chrono::high_resolution_clock::now();
     auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - begin);
