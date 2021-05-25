@@ -12,18 +12,17 @@
 
 using namespace std;
 
-void permute(string a, int current_letter_index, int end, vector<string> &a_permutations);
+//Loops over every index of every string and removes it, then stores the modified string. This gives us all the possible permutations of the countdown string of a given size
+void shorter(vector<string>& strings_vec, int word_size, vector<string>& shortened_strings_vec);
 
-void shorten(vector<string> permuations, vector<string>& eightlongperms, int word_size);
+//Will read in a dictionary file, and will only add words which start with letters from the countdown string
+void hash_map(unordered_map<string, string>& hash_dictionary, ifstream &input, string str);
 
-void remove_duplicates(vector<string>& shorterperms);
+//Reads in a specified dictionary file, and calls another function to store words that start with a letter that is also in the countdown string
+void dictionary_read(unordered_map<string, string>& hash_dictionary, string str, int word_size);
 
-void shorter(string str, int word_size, vector<string>& shortened_sorted_string);
-
-void dictionary_read(unordered_map<string, string>& hash_dictionary, string str, int word_size, vector<string> dictionary);
-
+//Compares a given permutation with a given word from the dictionary file
 bool comparison(vector<string>& strings_vec, unordered_map<string, string>& hash_dictionary);
 
-void read_file(vector<string>& dictionary, string str, int word_size);
 
-bool compare(vector<string> shorterperms, vector<string> dictionary, int word_size);
+

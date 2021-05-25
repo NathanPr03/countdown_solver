@@ -10,13 +10,12 @@
 #include <fstream>
 #include <chrono>
 #include <unordered_map>
+
 #include "permutations.h"
 
 using namespace std;
 
 int main(){
-    //ofstream output("outputfile.txt");
-    //ofstream output2("outputfile2.txt");
     string str;
     cout << "Please enter the letters: ";
     cin >> str;
@@ -24,59 +23,45 @@ int main(){
     //Start measuring time
     auto begin = chrono::high_resolution_clock::now();
 
-    int n = str.size();
     int word_size = 9;
     bool word_found =0;
 
-    vector<string> permutations;
-    vector<string> shorterperms;
-    vector<string> dictionary;
+    vector<string> strings_vec; //Stores the current string(s) that we are going to shortened
+    vector<string> shortened_strings_vec; //Stores the current string(s) that we are comparing against the dictionary
 
-    vector<string> strings_vec;
-    unordered_map<string, string> hash_dictionary;
-
-    strings_vec.push_back(str);
-    while(word_found == false && word_size>0){
-        cout << "Looking for " << word_size << " letter words!" << endl;
-        dictionary_read(hash_dictionary, str, word_size, dictionary);
-
-        if(comparison(strings_vec, hash_dictionary)){
-            word_found = true;
-        }
-        hash_dictionary.clear();
-        strings_vec.clear();
-
-        word_size--;
-        shorter(str, word_size, strings_vec);
-    }
-    
     /**
-    //permute(str, 0, n-1, permutations); 
+     * Stores a given dictionary file in a hash-map
+     * Stores a given word as the data 
+     * Stores a given word, sorted alphabetically, as the ID 
+     */
+    unordered_map<string, string> hash_dictionary;       
     
-    //sort(permutations.begin(), permutations.end()); 
+    shortened_strings_vec.push_back(str);
 
-    read_file(dictionary, str, word_size);
-    
-    while(word_found == false){
-        cout << "Starting stage " << word_size << "!" << endl;
-        shorten(permutations, shorterperms, word_size);
-        remove_duplicates(shorterperms);
-        
-        read_file(dictionary, str, word_size);
+    //Loops while we havent found a word and are looking for a word thats at least 3 letters long
+    while(word_found == false && word_size>=3){
+        cout << "Looking for " << word_size << " letter words!" << endl;
+        dictionary_read(hash_dictionary, str, word_size);
 
-        if(compare(shorterperms, dictionary, word_size)){
+        if(comparison(shortened_strings_vec, hash_dictionary)){
             word_found = true;
         }
+        
         word_size--;
 
-        dictionary.clear();
-        shorterperms.clear();
+        strings_vec = shortened_strings_vec; //Sets the new strings that we want to shorten
+
+        shortened_strings_vec.clear();
+        hash_dictionary.clear();
+
+        shorter(strings_vec, word_size, shortened_strings_vec);
     }
-    */
+    
     //Stop measuring time and calculate the elapsed time
     auto end = chrono::high_resolution_clock::now();
-    auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - begin);
+    auto elapsed = chrono::duration_cast<std::chrono::milliseconds>(end - begin);
 
-    std::cout << "This program ran in: " << elapsed.count() << " seconds" << endl;
+    std::cout << "This program ran in: " << elapsed.count() << " milliseconds" << endl;
+
     return 0;
 }
