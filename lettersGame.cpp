@@ -20,6 +20,14 @@ int main(){
     cout << "Please enter the letters: ";
     cin >> str;
 
+    //Input validation
+    while(str.length() != 9){
+        cout << "Please make sure you enter 9 letters" << endl;
+        cout << "Please enter the letters: ";
+        cin >> str;
+    }
+    
+    
     //Start measuring time
     auto begin = chrono::high_resolution_clock::now();
 
